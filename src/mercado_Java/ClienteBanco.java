@@ -19,13 +19,13 @@ public class ClienteBanco {
 		ResultSet resultado = stmt.executeQuery(sql);
 		while(resultado.next()) {
 			int id = resultado.getInt("id");
-			String nome = resultado.getString("nome");
+			String nome = resultado.getString("nomeCli");
 			String sexo = resultado.getString("sexo");
 			clientes.add(new Cliente(id, nome, sexo));
 		}
 		
 		for(Cliente c: clientes) {
-			System.out.println("Id: " + c.getId() + " Nome: " + c.getNome() + " Sexo: " + c.getSexo());
+			System.out.println("Id: " + c.getId() + "\nNome: " + c.getNome() + "\nSexo: " + c.getSexo() + "\n ------------");
 		}
 		conexao.close();
 	}
@@ -38,7 +38,7 @@ public class ClienteBanco {
 		String nome = teclado.nextLine();
 		System.out.println("Digite o sexo: (m/f) ");
 		String sexo = teclado.next();
-		String sql = "INSERT INTO clientes (nome,sexo) value (?,?)";
+		String sql = "INSERT INTO clientes (nomeCli,sexo) value (?,?)";
 		PreparedStatement stmt = conexao.prepareStatement(sql);
 		stmt.setString(1, nome);
 		stmt.setString(2, sexo);
@@ -78,7 +78,7 @@ public class ClienteBanco {
 				System.out.println("===================================");
 				System.out.println("Novo nome: ");
 				String nome = teclado.nextLine();
-				String sql = "UPDATE clientes SET nome = ? WHERE id = ?";
+				String sql = "UPDATE clientes SET nomeCli = ? WHERE id = ?";
 				PreparedStatement stmt = conexao.prepareStatement(sql);
 				stmt.setString(1, nome);
 				stmt.setInt(2, id);
