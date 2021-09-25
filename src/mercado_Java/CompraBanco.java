@@ -10,26 +10,28 @@ import java.util.List;
 import java.util.Scanner;
 
 public class CompraBanco {
-	public void RetonarCompra() throws SQLException{
+	public void RetonarCompra() throws SQLException {
 		Connection conexao = Conexao.getConexao();
-		String sql = "SELECT nomeCli, nomeProd, qtdComprada FROM clientes, compra, produtos WHERE clientes.id = compra.idCliente AND produtos.id = compra.idProduto";
+		String sql = "SELECT nomeCli, nomeProd, qtdComprada, precoCompra FROM clientes, compra, produtos WHERE clientes.id = compra.idCliente AND produtos.id = compra.idProduto";
 		Statement stmt = conexao.createStatement();
 		List<Compra> compras = new ArrayList<Compra>();
 		ResultSet resultado = stmt.executeQuery(sql);
-		while(resultado.next()) {
+		while (resultado.next()) {
 			String nomeCli = resultado.getString("nomeCli");
 			String nomeProd = resultado.getString("nomeProd");
 			int qtd = resultado.getInt("qtdComprada");
-			compras.add(new Compra(nomeCli, nomeProd, qtd));
+			float preco = resultado.getFloat("precoCompra");
+			compras.add(new Compra(nomeCli, nomeProd, qtd, preco));
 		}
-		
-		for(Compra c: compras) {
-			System.out.println("Cliente: " + c.getCli() + "\nProduto: " + c.getProd() + "\nQuantidade: " + c.getQtd() + "\n ------------");
+
+		for (Compra c : compras) {
+			System.out.println("Cliente: " + c.getCli() + "\nProduto: " + c.getProd() + "\nQuantidade: " + c.getQtd() + "\nPreço Total: " + c.getPreco()
+					+ "\n ------------");
 		}
 		conexao.close();
 	}
 
-	public void CadastrarCompra() throws SQLException{
+	public void CadastrarCompra() throws SQLException {
 		Connection conexao = Conexao.getConexao();
 		Scanner teclado = new Scanner(System.in);
 		System.out.println("Digite o ID do cliente que realizou a compra: ");
@@ -38,17 +40,23 @@ public class CompraBanco {
 		int idProd = teclado.nextInt();
 		System.out.println("Digite a quantidade comprada: ");
 		int qtd = teclado.nextInt();
-		/*
-		 * String sqlPreco = "SELECT preco FROM produtos where id = ?";
-		 * PreparedStatement stmtPreco = conexao.prepareStatement(sqlPreco); ResultSet
-		 * result = stmtPreco.executeQuery(); double precoCompra = qtd * result.toDou;
-		 */
+		
+		String sqlPreco = "SELECT preco FROM produtos where id = 1";
+		Statement stmtPreco = conexao.createStatement();
+		ResultSet result = stmtPreco.executeQuery(sqlPreco);
+		float precoProd = 0;
+		float precoCompra = 0;
+		while (result.next()) {
+			precoProd = result.getFloat("preco");
+		}
+		precoCompra = qtd * precoProd;
 		String sql = "INSERT INTO compra (idProduto, idCliente, qtdComprada, precoCompra) VALUES(?,?,?,?)";
 		PreparedStatement stmt = conexao.prepareStatement(sql);
 		stmt.setInt(1, idProd);
 		stmt.setInt(2, idCli);
 		stmt.setInt(3, qtd);
-		
+		stmt.setFloat(4, precoCompra);
+		stmt.execute();
 		conexao.close();
 	}
 }

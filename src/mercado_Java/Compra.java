@@ -4,11 +4,13 @@ public class Compra {
 	private String cli;
 	private String prod; 
 	private int qtd;
+	private float preco;
 	
-	public Compra(String cli, String prod, int qtd) {
+	public Compra(String cli, String prod, int qtd, float preco) {
 		this.setCli(cli);
 		this.setProd(prod);
 		this.setQtd(qtd);
+		this.setPreco(preco);
 	}
 
 	public String getCli() {
@@ -33,5 +35,13 @@ public class Compra {
 
 	public void setQtd(int qtd) {
 		this.qtd = qtd;
+	}
+
+	public float getPreco() {
+		return preco;
+	}
+
+	public void setPreco(float preco) {
+		this.preco = preco;
 	}
 }
