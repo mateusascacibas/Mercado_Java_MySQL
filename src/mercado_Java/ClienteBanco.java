@@ -36,8 +36,9 @@ public class ClienteBanco {
 		Connection conexao = Conexao.getConexao();
 		System.out.println("Digite o nome que deseja cadastrar: ");
 		String nome = teclado.nextLine();
-		System.out.println("Digite o sexo: (m/f) ");
+		System.out.println("Digite o sexo: (M/f) ");
 		String sexo = teclado.next();
+		sexo = sexo.toUpperCase();
 		String sql = "INSERT INTO clientes (nomeCli,sexo) value (?,?)";
 		PreparedStatement stmt = conexao.prepareStatement(sql);
 		stmt.setString(1, nome);

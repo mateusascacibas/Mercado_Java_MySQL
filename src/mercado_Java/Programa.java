@@ -21,7 +21,7 @@ public class Programa {
 				System.out.println("3 - Compras");
 				System.out.println("4 - Sair");
 				System.out.print("Digite a opção que deseja: ");
-
+				opcMenu = 0;
 				opc = teclado.nextInt();
 				System.out.println("===================================");
 				if (opc == 1) {
@@ -121,14 +121,6 @@ public class Programa {
 							break;
 						}
 						case 3: {
-							prodBanco.RemoverProdutos();
-							break;
-						}
-						case 4: {
-							prodBanco.EditarProdutos();
-							break;
-						}
-						case 5:{
 							break;
 						}
 						default: {
@@ -137,7 +129,11 @@ public class Programa {
 						}
 						}
 					}
-				}else {
+				}else if(opc == 4){
+					System.out.println("Saindo...");
+				}
+				else {
+				
 					System.out.println("Digite um opção válida.");
 				}
 			} catch (Exception e) {

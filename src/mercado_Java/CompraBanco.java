@@ -51,12 +51,18 @@ public class CompraBanco {
 		}
 		precoCompra = qtd * precoProd;
 		String sql = "INSERT INTO compra (idProduto, idCliente, qtdComprada, precoCompra) VALUES(?,?,?,?)";
+		String atualizaEstoque = "UPDATE produtos SET quantidade = quantidade - ? WHERE id = ?";
+		PreparedStatement stmtEstoque = conexao.prepareStatement(atualizaEstoque);
 		PreparedStatement stmt = conexao.prepareStatement(sql);
+		stmtEstoque.setInt(1, qtd);
+		stmtEstoque.setInt(2, idProd);
 		stmt.setInt(1, idProd);
 		stmt.setInt(2, idCli);
 		stmt.setInt(3, qtd);
 		stmt.setFloat(4, precoCompra);
 		stmt.execute();
+		stmtEstoque.execute();
+		System.out.println("---- Compra realizada com sucesso! ----");
 		conexao.close();
 	}
 }
